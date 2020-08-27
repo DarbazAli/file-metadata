@@ -1,4 +1,6 @@
 const express = require('express')
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'})
 
 const app = express();
 
@@ -18,4 +20,16 @@ app.get('/', (req, res) => {
 
 app.get('/about', (req, res) => {
     res.render('about')
+})
+
+
+
+// setup post request to upload file
+app.post('/api/upload', upload.single('upfile'), (req, res) => {
+    // {"name":"Reload.svg","type":"image/svg+xml","size":937}
+    res.json({
+        name: req.file.originalname,
+        type: req.file.mimetype,
+        size: req.file.size
+    })
 })
