@@ -27,12 +27,6 @@ app.get('/about', (req, res) => {
 // setup post request to upload file
 app.post('/api/upload', upload.single('upfile'), (req, res, next) => {
     // {"name":"Reload.svg","type":"image/svg+xml","size":937}
-    req.file.filename = req.file.originalname;
-    next()
-    },
-
-    (req, res, next) => {
-
     res.json({
         name: req.file.originalname,
         type: req.file.mimetype,
