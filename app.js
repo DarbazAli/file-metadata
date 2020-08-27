@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer({dest: 'uploads/'})
 
 const app = express();
-
+console.clear();
 app.listen(3000, () => console.log("Listening on 3000"))
 
 // setup template engine
@@ -18,18 +18,21 @@ app.get('/', (req, res) => {
     res.render('index', {title: 'Home', message: "Hello There"})
 })
 
-app.get('/about', (req, res) => {
-    res.render('about')
-})
-
-
-
 // setup post request to upload file
 app.post('/api/upload', upload.single('upfile'), (req, res, next) => {
-    // {"name":"Reload.svg","type":"image/svg+xml","size":937}
-    res.json({
-        name: req.file.originalname,
-        type: req.file.mimetype,
-        size: req.file.size
-    })
+
+    // if file is not selected, and user hits upload button
+    // redirec to home button
+    if ( !req.file ) {
+        res.status(401).redirect('/')
+    } 
+    
+    else {
+        res.json({
+            name: req.file.originalname,
+            type: req.file.mimetype,
+            size: req.file.size
+        })
+    }
+    
 })
